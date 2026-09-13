@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prismis - Local Content Intelligence TUI</title>
+    <meta name="description" content="Blazing-fast terminal interface for AI-powered content prioritization. RSS, Reddit, YouTube, Papers - all local.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=2">
+    <script defer data-domain="prismis.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L4 7v10l8 5 8-5V7l-8-5z" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path d="M12 2L8 12l4 10 4-10L12 2z" fill="currentColor" opacity="0.3"/>
+                    <path d="M12 2v20M4 7l8 5 8-5M4 17l8-5 8 5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                </svg>
+                <span class="logo-text">Prismis</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#install" class="nav-link">Installation</a>
+                <a href="https://github.com/nickpending/prismis" class="nav-link" aria-label="GitHub">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="https://buymeacoffee.com/nickpending" class="nav-link nav-link-coffee" target="_blank" rel="noopener" aria-label="Buy Me A Coffee">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.216 6.415l-.132-.666c-.119-.598-.388-1.163-1.001-1.379-.197-.069-.42-.098-.57-.241-.152-.143-.196-.366-.231-.572-.065-.378-.125-.756-.192-1.133-.057-.325-.102-.69-.25-.987-.195-.4-.597-.634-.996-.788a5.723 5.723 0 00-.626-.194c-1-.263-2.05-.36-3.077-.416a25.834 25.834 0 00-3.7.062c-.915.083-1.88.184-2.75.5-.318.116-.646.256-.888.501-.297.302-.393.77-.177 1.146.154.267.415.456.692.58.36.162.737.284 1.123.366 1.075.238 2.189.331 3.287.37 1.218.05 2.437.01 3.65-.118.299-.033.598-.073.896-.119.352-.054.578-.513.474-.834-.124-.383-.457-.531-.834-.473-.466.074-.96.108-1.382.146-1.177.08-2.358.082-3.536.006a22.228 22.228 0 01-1.157-.107c-.086-.01-.18-.025-.258-.036-.243-.036-.484-.08-.724-.13-.111-.027-.111-.185 0-.212h.005c.277-.06.557-.108.838-.147h.002c.131-.009.263-.032.394-.048a25.076 25.076 0 013.426-.12c.674.019 1.347.067 2.017.144l.228.031c.267.04.533.088.798.145.392.085.895.113 1.07.542.055.137.08.288.111.431l.319 1.484a.237.237 0 01-.199.284h-.003c-.037.006-.075.01-.112.015a36.704 36.704 0 01-4.743.295 37.059 37.059 0 01-4.699-.304c-.14-.017-.293-.042-.417-.06-.326-.048-.649-.108-.973-.161-.393-.065-.768-.032-1.123.161-.29.16-.527.404-.675.701-.154.316-.199.662-.267 1-.069.34-.176.707-.135 1.056.087.753.613 1.365 1.37 1.502a39.69 39.69 0 0011.343.376.483.483 0 01.535.53l-.071.697-1.018 9.907c-.041.41-.047.832-.125 1.237-.122.637-.553 1.028-1.182 1.171-.577.131-1.165.2-1.756.205-.656.004-1.31-.025-1.966-.022-.699.004-1.556-.06-2.095-.58-.475-.458-.54-1.174-.605-1.793l-.731-7.013-.322-3.094c-.037-.351-.286-.695-.678-.678-.336.015-.718.3-.678.679l.228 2.185.949 9.112c.147 1.344 1.174 2.068 2.446 2.272.742.12 1.503.144 2.257.156.966.016 1.942.053 2.892-.122 1.408-.258 2.465-1.198 2.616-2.657.34-3.332.683-6.663 1.024-9.995l.215-2.087a.484.484 0 01.39-.426c.402-.078.787-.212 1.074-.518.455-.488.546-1.124.385-1.766zm-1.478.772c-.145.137-.363.201-.578.233-2.416.359-4.866.54-7.308.46-1.748-.06-3.477-.254-5.207-.498-.17-.024-.353-.055-.47-.18-.22-.236-.111-.71-.054-.995.052-.26.152-.609.463-.646.484-.057 1.046.148 1.526.22.577.088 1.156.159 1.737.212 2.48.226 5.002.19 7.472-.14.45-.06.899-.13 1.345-.21.399-.072.84-.206 1.08.206.166.281.188.657.162.974a.544.544 0 01-.169.364zm-6.159 3.9c-.862.37-1.84.788-3.109.788a5.884 5.884 0 01-1.569-.217l.877 9.004c.065.78.717 1.38 1.5 1.38 0 0 1.243.065 1.658.065.447 0 1.786-.065 1.786-.065.783 0 1.435-.599 1.5-1.38l.94-9.95a3.996 3.996 0 00-1.295-.477c-.657-.152-1.315-.29-1.975-.411a9.025 9.025 0 00-1.313-.124z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title">
+                Your Personal Content Curator
+                <span class="hero-gradient">that never sleeps</span>
+            </h1>
+            <p class="hero-description">
+                Fetches and reads your RSS, Reddit, and YouTube sources on your schedule.<br>
+                AI prioritizes content based on YOUR interests and the models you choose. <br>
+                Vim-style command mode with Fabric integration for deeper AI content analysis.<br>
+                Blazing-fast terminal interface.
+            </p>
+            <div class="hero-actions">
+                <a href="#install" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 22h8M12 2v14M19 9l-7 7-7-7"/>
+                    </svg>
+                    Install Now
+                </a>
+                <a href="https://github.com/nickpending/prismis" class="btn btn-secondary">
+                    View Source
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Screenshot (shown only on mobile) -->
+    <section class="mobile-screenshot">
+        <img src="screenshot.png" alt="Prismis Terminal Interface">
+        <p class="mobile-screenshot-caption">
+            Prismis is a terminal-based interface designed for desktop use.<br>
+            Experience the full TUI on your computer.
+        </p>
+    </section>
+
+    <section class="demo">
+        <div class="demo-container">
+            <div class="demo-grid">
+                <!-- List View -->
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="terminal-title">prismis</span>
+                    </div>
+                    
+                    <div class="tui">
+                        <div class="tui-header">
+                            <span class="tui-logo">PRISMIS</span>
+                            <span class="tui-status">
+                                Priority: <span class="status-highlight">HIGH</span> |
+                                View: <span class="status-highlight">UNREAD</span> |
+                                Sort: <span class="status-highlight">NEWEST</span> |
+                                Filter: <span class="status-highlight">ALL</span> |
+                                Hidden: <span class="status-highlight">30</span>
+                                <span class="status-diamond">◆</span>
+                                <span class="status-time">18:02</span>
+                            </span>
+                        </div>
+
+                        <div class="tui-body">
+                            <!-- Sidebar -->
+                            <div class="tui-sidebar">
+                                <div class="sidebar-section">
+                                    <div class="sidebar-header">— SYSTEM</div>
+                                    <div class="sidebar-row">
+                                        <span>Sources:</span>
+                                        <span class="sidebar-value">6 active</span>
+                                    </div>
+                                    <div class="sidebar-row">
+                                        <span>Total:</span>
+                                        <span class="sidebar-value">11 items</span>
+                                    </div>
+                                    <div class="sidebar-row">
+                                        <span>Priority:</span>
+                                        <span class="sidebar-priority">
+                                            <span class="priority-high">●</span> 11 high
+                                        </span>
+                                    </div>
+                                    <div class="sidebar-row">
+                                        <span>Feed Health:</span>
+                                        <span class="sidebar-value">● Online</span>
+                                    </div>
+                                    <div class="sidebar-row">
+                                        <span>Memory:</span>
+                                        <span class="sidebar-value">18 MB</span>
+                                    </div>
+                                    <div class="sidebar-row">
+                                        <span>Updates:</span>
+                                        <span class="sidebar-value">1h ago</span>
+                                    </div>
+                                </div>
+
+                                <div class="sidebar-section">
+                                    <div class="sidebar-header">— SOURCES</div>
+
+                                    <div class="source-category">RSS [1]</div>
+                                    <div class="source-item">● Steipete Blog [4]</div>
+
+                                    <div class="source-category">REDDIT [4]</div>
+                                    <div class="source-item">● r/ChatGPT [2]</div>
+                                    <div class="source-item">● r/OpenAI [26]</div>
+                                    <div class="source-item">● r/cybersecurity [19]</div>
+                                    <div class="source-item">● r/hacking [10]</div>
+
+                                    <div class="source-category">YOUTUBE [1]</div>
+                                    <div class="source-item">● @unsupervised-learning [2]</div>
+                                </div>
+                            </div>
+
+                            <!-- Main Content -->
+                            <div class="tui-content">
+                                <div class="content-list" id="content-list">
+                                    <!-- Content will be inserted by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tui-footer">
+                            <span class="key">HIGH: 11  MED: 0  LOW: 0</span>
+                            <span class="key" style="margin-left: auto; opacity: 0.8">Press ? for help</span>
+                        </div>
+                        <div class="command-input">:favorite<span class="cursor">█</span></div>
+                    </div>
+                </div>
+
+                <!-- Reader View -->
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="terminal-title">prismis</span>
+                    </div>
+
+                    <div class="tui">
+                        <div class="tui-header">
+                            <span class="tui-logo">PRISMIS</span>
+                            <span class="tui-status">
+                                Priority: <span class="status-highlight">HIGH</span> |
+                                View: <span class="status-highlight">UNREAD</span> |
+                                Sort: <span class="status-highlight">NEWEST</span> |
+                                Filter: <span class="status-highlight">YOUTUBE</span> |
+                                Hidden: <span class="status-highlight">43</span>
+                                <span class="status-diamond">◆</span>
+                                <span class="status-time">17:56</span>
+                            </span>
+                        </div>
+
+                        <div class="tui-body">
+                            <div class="reader-container">
+                                <div class="reader-fixed-header">
+                                    <div class="reader-header" style="text-align: center; padding: 1rem 0; font-size: 14px; color: var(--tui-cyan);">
+                                        ARTICLE 1 of 1
+                                    </div>
+                                    <div class="reader-content-header" style="display: flex; align-items: center; padding: 0.5rem 1rem; border-bottom: 1px solid #222;">
+                                        <span class="reader-indicator" style="color: var(--tui-red); margin-right: 0.5rem;">●</span>
+                                        <span class="reader-title" style="flex: 1;">Unsupervised Learning with Michael Brown</span>
+                                        <span class="reader-source" style="color: var(--text-dim); font-size: 12px;">@unsupervised-learning • 27d</span>
+                                    </div>
+                                    <div class="reader-meta" style="padding: 0.25rem 1rem; font-size: 11px; color: var(--text-dim);">
+                                        michaelbrown • trailabits • buttercup • darpaalgorithmchallenge • largelanguagemodels
+                                    </div>
+                                </div>
+
+                                <div class="reader-scrollable" style="padding: 1rem;">
+                                    <div class="reader-section" style="margin-bottom: 1.5rem;">
+                                <div class="reader-section-title" style="color: var(--tui-cyan); margin-bottom: 0.5rem;">▸ Overview</div>
+                                <div class="reader-section-content">
+                                    This interview features Michael Brown, principal security engineer at Trailabits, discussing his team's experience
+                                    designing Buttercup, an autonomous AI-driven system that competed in the DARPA AI Cyber Challenge. The challenge
+                                    focused on building systems that could autonomously find, prove, and patch software vulnerabilities. Brown shares
+                                    insights on system design, AI integration, and lessons learned.
+                                </div>
+                            </div>
+
+                            <div class="reader-section" style="margin-bottom: 1.5rem;">
+                                <div class="reader-section-title" style="color: var(--tui-cyan); margin-bottom: 0.5rem;">▸ Key Points</div>
+                                <div class="reader-section-content">
+                                    <div class="reader-bullet">◆ Buttercup combined traditional deterministic software analysis with AI/ML, leveraging the strengths of each.</div>
+                                    <div class="reader-bullet">◆ The system was modular, enabling independent development and integration of components.</div>
+                                    <div class="reader-bullet">◆ Large language models (LLMs) were used selectively for tasks like patch generation, not for end-to-end decision-making.</div>
+                                    <div class="reader-bullet">◆ Problem formulation is critical: distinguishing prescriptive problems suited for deterministic algorithms from descriptive problems suited for AI.</div>
+                                    <div class="reader-bullet">◆ The challenge highlighted the compounding error problem in AI pipelines and the importance of minimizing AI use to critical subproblems.</div>
+                                    <div class="reader-bullet">◆ The team's multi-agent architecture used multiple LLMs with specialized roles to generate and validate patches.</div>
+                                    <div class="reader-bullet">◆ LLMs tend to hallucinate vulnerabilities if asked to find them without ground truth, so the system first used fuzzers to prove vulnerabilities.</div>
+                                    <div class="reader-bullet">◆ Increasing context window size in LLMs can dilute focus, so constrained context is better for accuracy.</div>
+                                    <div class="reader-bullet">◆ The competition validated early design choices and vindicated the use of modular, hybrid AI-deterministic architectures.</div>
+                                    <div class="reader-bullet">◆ Conditional probability and mission survivability concepts from military aviation were applied to understand AI system reliability.</div>
+                                </div>
+                            </div>
+
+                            <div class="reader-section" style="margin-bottom: 1.5rem;">
+                                <div class="reader-section-title" style="color: var(--tui-cyan); margin-bottom: 0.5rem;">▸ Summary</div>
+                                <div class="reader-section-content">
+                                    Michael Brown introduces himself as the principal security engineer at Trailabits, leading AI/ML security research. His
+                                    team developed Buttercup, a tool that placed second in the DARPA AI Cyber Challenge. The competition required building a
+                                    fully autonomous system capable of finding, proving, and patching vulnerabilities in open source software with high
+                                    accuracy.<br><br>
+
+                                    Initially, Buttercup's design was ambitious, combining static and dynamic analysis with AI/ML techniques. However,
+                                    competitive time and budget constraints forced simplifications. The final system was a modular pipeline addressing four
+                                    to five core tasks: vulnerability discovery, proof via crashing inputs or sanitizer triggers, contextualization, patch
+                                    generation, and orchestration for reliability.
+                                </div>
+                            </div>
+
+                            <div class="reader-section">
+                                <div class="reader-section-title">▸ Notable Quotes</div>
+                                <div class="reader-section-content">
+                                    <div class="reader-quote">"Usually, this would take me 2–3 weeks of setup (auth, DB, UI, email, PDFs… all the glue work). With Claude Code and MCPs, it actually came together in a matter of hours."</div>
+                                    
+                                    <div class="reader-quote">"By lunch, I had Auth (magic links, session mgmt) - DB spun up on Neon, fully wired with Prisma - Clean Figma-inspired UI pulled straight from a design kit via MCP."</div>
+                                    
+                                    <div class="reader-quote">"For the entire day: $3.65 (~5.8M tokens pushed through Sonnet + Haiku). For less than a latte, I shipped something I could actually use."</div>
+                                    
+                                    <div class="reader-quote">"It feels like a different world than it was two years ago, a brave new world of code automation."</div>
+                                    
+                                    <div class="reader-quote">"If it can do this so cheaply, a lot of us might need to rethink life choices in 2,3 years."</div>
+                                </div>
+                            </div>
+
+                            <div class="reader-section">
+                                <div class="reader-section-title">▸ Takeaways</div>
+                                <div class="reader-section-content">
+                                    This post illustrates a paradigm shift in software development driven by AI and modular code processors. Tasks that once 
+                                    required weeks of manual coding can now be automated end-to-end, dramatically reducing time and cost. The integration of 
+                                    design, database, authentication, and deployment tools into a unified AI-driven workflow points to a future where developers 
+                                    focus more on high-level problem solving than boilerplate code. However, this also raises important questions about the 
+                                    evolving role of developers and the tech job market. Embracing these tools early could be critical for future-proofing 
+                                    careers and workflows.
+                                </div>
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tui-footer">
+                            <span class="key">HIGH: 1  MED: 0  LOW: 0</span>
+                            <span class="key" style="margin-left: auto; opacity: 0.8">Press ? for help</span>
+                        </div>
+                        <div class="command-input">:<span class="cursor">█</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="architecture">
+        <div class="architecture-container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="architecture-flow">
+                <div class="flow-item">Internet</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">Fetchers<br><span class="flow-detail">RSS, Reddit, YouTube</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">LLM Analysis<br><span class="flow-detail">Your context.md</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">SQLite<br><span class="flow-detail">WAL mode</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">TUI<br><span class="flow-detail">Go/Bubbletea</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="command-mode" style="background: #0a0a0a; padding: 4rem 0;">
+        <div class="features-container">
+            <h2 class="section-title">Command Mode Power</h2>
+            <p style="text-align: center; opacity: 0.8; margin-bottom: 3rem;">Press <code>:</code> to enter command mode - just like vim</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 7h16M4 12h16M4 17h16"/>
+                            <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Rich Commands</h3>
+                    <p><code>:mark</code> <code>:favorite</code> <code>:copy</code> <code>:report</code> <code>:prune</code> <code>:help</code> - All with tab completion.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                            <path d="M14 2v6h6M10 12h4M10 16h4"/>
+                        </svg>
+                    </div>
+                    <h3>Daily Reports</h3>
+                    <p><code>:report</code> generates AI summaries of your content. Markdown format, saved automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <h3>Fabric Integration</h3>
+                    <p><code>:fabric</code> pipes content to Fabric AI for analysis. Extract wisdom, summarize, analyze claims.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="features-container">
+            <h2 class="section-title">Why Terminal?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                    </div>
+                    <h3>&lt;100ms Launch</h3>
+                    <p>Native Go binary starts instantly. No browser, no loading screens.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="10" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0110 0v4"/>
+                        </svg>
+                    </div>
+                    <h3>Local Storage</h3>
+                    <p>SQLite database stays on your machine. Only content goes to LLM for analysis.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                        </svg>
+                    </div>
+                    <h3>AI Prioritization</h3>
+                    <p>LLM analyzes content against your personal context.md file.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+                        </svg>
+                    </div>
+                    <h3>No Mouse Required</h3>
+                    <p>Navigate everything from your keyboard. Built for flow state.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+                        </svg>
+                    </div>
+                    <h3>Multi-Source</h3>
+                    <p>RSS, Reddit, YouTube, Papers. All unified in one interface.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+                        </svg>
+                    </div>
+                    <h3>Smart Notifications</h3>
+                    <p>Desktop alerts only for HIGH priority content. Never miss what matters.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="4 17 10 11 4 5M12 19 20 19"/>
+                        </svg>
+                    </div>
+                    <h3>Background Daemon</h3>
+                    <p>Python daemon fetches and analyzes content while you work.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="install" class="install">
+        <div class="install-container">
+            <h2 class="section-title">Get Started</h2>
+            
+            <div class="install-grid">
+                <div class="install-step">
+                    <div class="step-number">1</div>
+                    <h3>Clone & Install</h3>
+                    <pre class="code"><code>git clone https://github.com/nickpending/prismis
+cd prismis
+make install</code></pre>
+                </div>
+
+                <div class="install-step">
+                    <div class="step-number">2</div>
+                    <h3>Add Sources</h3>
+                    <pre class="code"><code>prismis-cli source add https://news.ycombinator.com/rss
+prismis-cli source add reddit://rust
+prismis-cli source add youtube://UC9-y-6csu5WGm29I7JiwpnA</code></pre>
+                </div>
+
+                <div class="install-step">
+                    <div class="step-number">3</div>
+                    <h3>Configure Context</h3>
+                    <pre class="code"><code>cat > ~/.config/prismis/context.md << EOF
+## High Priority Topics
+- AI/LLM breakthroughs
+- Rust systems programming
+
+## Medium Priority Topics  
+- React/Next.js updates
+EOF</code></pre>
+                </div>
+
+                <div class="install-step">
+                    <div class="step-number">4</div>
+                    <h3>Launch</h3>
+                    <pre class="code"><code>prismis</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="future">
+        <div class="future-container">
+            <h2 class="section-title">What's New</h2>
+            <div class="future-grid">
+                <div class="future-item">
+                    <h3>✅ Fabric Integration</h3>
+                    <p>200+ AI patterns with tab completion. Extract wisdom, summarize, analyze claims - all from command mode.</p>
+                </div>
+                <div class="future-item">
+                    <h3>✅ Daily Reports</h3>
+                    <p>Generate daily, weekly, or custom period reports with <code>:report</code>. Markdown format saved to file.</p>
+                </div>
+                <div class="future-item">
+                    <h3>✅ Multiple LLM Providers</h3>
+                    <p>Choose OpenAI, Anthropic Claude, Groq, or local Ollama. Switch providers without changing workflow.</p>
+                </div>
+            </div>
+            <h2 class="section-title" style="margin-top: 3rem;">Coming Soon</h2>
+            <div class="future-grid">
+                <div class="future-item">
+                    <h3>MCP Server</h3>
+                    <p>Model Context Protocol server for AI agents to query your curated content programmatically.</p>
+                </div>
+                <div class="future-item">
+                    <h3>Archive Search</h3>
+                    <p>Full-text search across all historical content with AI-powered semantic search capabilities.</p>
+                </div>
+                <div class="future-item">
+                    <h3>Plugin System</h3>
+                    <p>Custom fetchers, analyzers, and workflows. Extend Prismis with your own patterns and integrations.</p>
+                </div>
+            </div>
+            <p class="future-note">
+                The vision: Prismis becomes your content intelligence layer.<br>
+                Not just for reading, but for feeding your entire AI ecosystem.
+            </p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="https://github.com/nickpending/prismis">GitHub</a>
+                <span class="separator">•</span>
+                <a href="https://github.com/nickpending/prismis#readme">Documentation</a>
+                <span class="separator">•</span>
+                <a href="https://github.com/nickpending/prismis/issues">Issues</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js?v=2"></script>
+</body>
+</html>
